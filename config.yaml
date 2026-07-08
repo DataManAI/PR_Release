@@ -1,0 +1,35 @@
+feeds:
+  - https://www.prnewswire.com/rss/news-releases-list.rss
+  - https://www.globenewswire.com/RssFeed/orgclass/1/feedTitle/GlobeNewswire%20-%20News%20about%20Public%20Companies
+
+poll_interval_seconds: 60
+
+# Matches if any of these strings appear (case-insensitive) in the title or summary
+watchlist:
+  - "MICRON"
+  - "SANDISK"
+  - "NVIDIA"
+  - "TSLA"
+  - "Microsoft"
+  - "AAOI"
+  - "AXTI"
+  - "WDC"
+  - "STX"
+  - "LITE"
+
+# Matches regardless of company
+global_keywords:
+  - "merger"
+  - "acquisition"
+  - "bankruptcy"
+  - "FDA approval"
+
+email:
+  smtp_host: smtp.gmail.com
+  smtp_port: 587
+  # username / app_password / to are NOT stored here - they come from .env locally
+  # (see .env.example) or from GitHub Actions secrets in CI. Never commit real
+  # credentials into this file.
+
+state_db: state.db
+log_file: monitor.log
