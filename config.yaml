@@ -1,6 +1,11 @@
 feeds:
+  # Company press-release wires
   - https://www.prnewswire.com/rss/news-releases-list.rss
   - https://www.globenewswire.com/RssFeed/orgclass/1/feedTitle/GlobeNewswire%20-%20News%20about%20Public%20Companies
+  # General breaking/market news wires (broader coverage beyond company-issued PRs)
+  - https://www.cnbc.com/id/100003114/device/rss/rss.html
+  - https://feeds.content.dowjones.io/public/rss/mw_topstories
+  - https://www.nasdaq.com/feed/rssoutbound?category=Markets
 
 poll_interval_seconds: 60
 

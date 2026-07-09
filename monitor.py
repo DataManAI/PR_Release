@@ -2,6 +2,7 @@ import argparse
 import logging
 import os
 import smtplib
+import socket
 import sqlite3
 import sys
 import time
@@ -13,6 +14,7 @@ import yaml
 from dotenv import load_dotenv
 
 CONFIG_PATH = Path(__file__).parent / "config.yaml"
+FEED_TIMEOUT_SECONDS = 15
 
 load_dotenv(Path(__file__).parent / ".env")
 
@@ -83,7 +85,12 @@ def poll_once(config, conn, logger):
     total_matches = 0
 
     for feed_url in config["feeds"]:
-        parsed = feedparser.parse(feed_url)
+        try:
+            parsed = feedparser.parse(feed_url)
+        except Exception:
+            logger.exception("Failed to fetch feed %s", feed_url)
+            continue
+
         if parsed.bozo and not parsed.entries:
             logger.warning("Failed to fetch/parse feed %s: %s", feed_url, parsed.bozo_exception)
             continue
@@ -145,6 +152,8 @@ def setup_logging(log_file):
 
 
 def main():
+    socket.setdefaulttimeout(FEED_TIMEOUT_SECONDS)
+
     parser = argparse.ArgumentParser(description="Press release wire monitor")
     parser.add_argument("--once", action="store_true", help="Poll feeds once and exit")
     parser.add_argument("--test-email", action="store_true", help="Send a test email and exit")
