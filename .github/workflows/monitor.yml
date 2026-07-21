@@ -25,6 +25,7 @@ jobs:
           GMAIL_USERNAME: ${{ secrets.GMAIL_USERNAME }}
           GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
           GMAIL_TO: ${{ secrets.GMAIL_TO }}
+          SEC_EDGAR_CONTACT: ${{ secrets.SEC_EDGAR_CONTACT }}
 
       - name: Commit updated seen-state
         run: |
