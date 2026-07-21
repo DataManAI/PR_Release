@@ -15,6 +15,12 @@ from dotenv import load_dotenv
 
 CONFIG_PATH = Path(__file__).parent / "config.yaml"
 FEED_TIMEOUT_SECONDS = 15
+# Some wires (e.g. Nasdaq/Akamai) hang until timeout on feedparser's default
+# User-Agent but respond immediately to a browser-like one.
+FEED_USER_AGENT = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+)
 
 load_dotenv(Path(__file__).parent / ".env")
 
@@ -27,6 +33,14 @@ def load_config():
     email_cfg["username"] = os.environ.get("GMAIL_USERNAME", email_cfg.get("username", ""))
     email_cfg["app_password"] = os.environ.get("GMAIL_APP_PASSWORD", email_cfg.get("app_password", ""))
     email_cfg["to"] = os.environ.get("GMAIL_TO", email_cfg.get("to", ""))
+
+    # SEC EDGAR requires a self-identifying User-Agent with a real contact
+    # (https://www.sec.gov/os/webmaster-faq#developers) or it 403s - kept out
+    # of the committed config.yaml so no personal email lands in the repo.
+    sec_contact = os.environ.get("SEC_EDGAR_CONTACT", "")
+    for feed in config.get("feeds", []):
+        if isinstance(feed, dict) and feed.get("user_agent") == "${SEC_EDGAR_CONTACT}":
+            feed["user_agent"] = sec_contact or FEED_USER_AGENT
 
     return config
 
@@ -84,9 +98,16 @@ def poll_once(config, conn, logger):
     total_new = 0
     total_matches = 0
 
-    for feed_url in config["feeds"]:
+    for feed in config["feeds"]:
+        if isinstance(feed, dict):
+            feed_url = feed["url"]
+            agent = feed.get("user_agent", FEED_USER_AGENT)
+        else:
+            feed_url = feed
+            agent = FEED_USER_AGENT
+
         try:
-            parsed = feedparser.parse(feed_url)
+            parsed = feedparser.parse(feed_url, agent=agent)
         except Exception:
             logger.exception("Failed to fetch feed %s", feed_url)
             continue

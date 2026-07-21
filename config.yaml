@@ -9,6 +9,34 @@ feeds:
   - https://feeds.bloomberg.com/markets/news.rss
   - https://feeds.bloomberg.com/business/news.rss
   - https://feeds.bloomberg.com/technology/news.rss
+  # Semiconductor/tech trade press (sector-specific coverage for the watchlist below)
+  - https://www.tomshardware.com/feeds/all
+  - https://www.eetimes.com/feed/
+  - https://www.semianalysis.com/feed
+  - https://www.digitimes.com/rss/daily.xml
+  # SEC EDGAR 8-K filings direct from source, one feed per watchlist ticker.
+  # SEC requires a self-identifying User-Agent (not a browser UA) or it 403s -
+  # see https://www.sec.gov/os/webmaster-faq#developers
+  - url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=723125&type=8-K&dateb=&owner=include&count=10&output=atom # MU - Micron
+    user_agent: "${SEC_EDGAR_CONTACT}"
+  - url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=2023554&type=8-K&dateb=&owner=include&count=10&output=atom # SNDK - Sandisk
+    user_agent: "${SEC_EDGAR_CONTACT}"
+  - url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=1045810&type=8-K&dateb=&owner=include&count=10&output=atom # NVDA - Nvidia
+    user_agent: "${SEC_EDGAR_CONTACT}"
+  - url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=1318605&type=8-K&dateb=&owner=include&count=10&output=atom # TSLA - Tesla
+    user_agent: "${SEC_EDGAR_CONTACT}"
+  - url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=789019&type=8-K&dateb=&owner=include&count=10&output=atom # MSFT - Microsoft
+    user_agent: "${SEC_EDGAR_CONTACT}"
+  - url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=1158114&type=8-K&dateb=&owner=include&count=10&output=atom # AAOI - Applied Optoelectronics
+    user_agent: "${SEC_EDGAR_CONTACT}"
+  - url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=1051627&type=8-K&dateb=&owner=include&count=10&output=atom # AXTI - AXT Inc
+    user_agent: "${SEC_EDGAR_CONTACT}"
+  - url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=106040&type=8-K&dateb=&owner=include&count=10&output=atom # WDC - Western Digital
+    user_agent: "${SEC_EDGAR_CONTACT}"
+  - url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=1137789&type=8-K&dateb=&owner=include&count=10&output=atom # STX - Seagate
+    user_agent: "${SEC_EDGAR_CONTACT}"
+  - url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=1633978&type=8-K&dateb=&owner=include&count=10&output=atom # LITE - Lumentum
+    user_agent: "${SEC_EDGAR_CONTACT}"
 
 poll_interval_seconds: 60
 
@@ -18,12 +46,14 @@ watchlist:
   - "SANDISK"
   - "NVIDIA"
   - "TSLA"
-  - "Microsoft"
+  - "MSFT"
   - "AAOI"
   - "AXTI"
   - "WDC"
   - "STX"
   - "LITE"
+  - "DRAM"
+  
 
 # Matches regardless of company
 global_keywords:
@@ -31,6 +61,21 @@ global_keywords:
   - "acquisition"
   - "bankruptcy"
   - "FDA approval"
+  - "IPO"
+  - "initial public offering"
+  - "S-1 filing"
+  - "direct listing"
+  - "going public"
+  - "prices its IPO"
+  - "stock market debut"
+  - "public offering"
+  - "NYSE listing"
+  - "Nasdaq listing"
+  - "files for IPO"
+  - "confidentially filed"
+  - "roadshow"
+  - "underwriters"
+  - "SPAC merger"
 
 email:
   smtp_host: smtp.gmail.com
